@@ -1,0 +1,43 @@
+Sub transferirDatosOtraHoja()
+Dim ensa As String
+Dim fecha As String
+Dim retardo As String
+
+Dim ultimaFila As Long
+Dim ultimaFilaAuxiliar As Long
+Dim cont As Long
+Dim palabraBusqueda As String
+
+palabraBusqueda = Sheets("Hoja calculos").Cells(18, 14)
+palabraBusqueda = "*" & palabraBusqueda & "*"
+
+ultimaFila = Sheets("Hoja calculos").Range("L" & Rows.Count).End(xlUp).Row
+
+If ultimaFila < 23 Then
+   Exit Sub
+End If
+
+For cont = 23 To ultimaFila
+  If Sheets("Hoja calculos").Cells(cont, 14) Like palabraBusqueda Then
+     ensa = Sheets("Hoja calculos").Cells(cont, 12)
+     fecha = Sheets("Hoja calculos").Cells(cont, 13)
+     retardo = Sheets("Hoja calculos").Cells(cont, 14)
+     
+     ultimaFilaAuxiliar = Sheets("Reporte impresion").Range("A" & Rows.Count).End(xlUp).Row
+     Sheets("Reporte impresion").Cells(ultimaFilaAuxiliar + 1, 1) = ensa
+     Sheets("Reporte impresion").Cells(ultimaFilaAuxiliar + 1, 2) = fecha
+     Sheets("Reporte impresion").Cells(ultimaFilaAuxiliar + 1, 3) = retardo
+  End If
+Next cont
+
+ultimaFilaAuxiliar = Sheets("Reporte impresion").Range("A" & Rows.Count).End(xlUp).Row
+With Sheets("Reporte impresion").Range("A11:C" & ultimaFilaAuxiliar).Font
+   .Name = "Arial"
+   .Size = 8
+   .Italic = False
+End With
+
+MsgBox "Proceso terminado", vbInformation, "Resultado"
+
+
+End Sub
